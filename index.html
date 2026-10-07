@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>বিজ্ঞাপন দেখুন</title>
+    <script src="https://telegram.org"></script>
+    <script src="https://adsgram.ai"></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #1c1c1e; color: white; padding: 50px 20px; }
+        button { background-color: #2481cc; color: white; border: none; padding: 15px 30px; font-size: 18px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h2>ভিডিওটি আনলক করতে নিচের বাটনে চাপুন</h2>
+    <p>বিজ্ঞাপনটি সম্পূর্ণ দেখলে ভিডিওটি স্বয়ংক্রিয়ভাবে ইনবক্সে চলে যাবে।</p>
+    <br>
+    <button onclick="showAdsgramAd()">👉 বিজ্ঞাপন লোড করুন</button>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const videoId = urlParams.get('video_id') || 'unknown';
+
+        // আপাতত এটি ৪১২৩ এ রাখুন, এডসগ্রাম থেকে ব্লক আইডি পাওয়ার পর পরিবর্তন করব
+        const AdController = window.Adsgram.init({ blockId: "4123" });
+
+        function showAdsgramAd() {
+            AdController.show().then((result) => {
+                if (result.done) {
+                    tg.sendData(JSON.stringify({ ad_status: "completed", video_id: videoId }));
+                }
+            }).catch((error) => {
+                alert("বিজ্ঞাপন সম্পূর্ণ দেখা হয়নি। আবার চেষ্টা করুন।");
+            });
+        }
+    </script>
+</body>
+</html>
